@@ -5,47 +5,18 @@ import string
 import pickle
 from tqdm import tqdm
 from datasketch import MinHash, MinHashLSH
+import fire
 
-#import ray
+def loopiter(partnum, fids_a_part, test_filename, lshdir, threshold, dedup_outfile, fundats):
 
-#ray.init(log_to_driver=False)
+    #if partnum < partstart or partnum >= partend:
+    #    return
 
-#NUMTHREADS=4
-
-# Define the paths for the A and B folders
-#folder_a = '/home/cmc/dev/projects/datasets/owt/openwebtext/'
-#folder_b = 'funcom_test/'
-file_b = '../owt/tdats.test'
-
-#files_a = os.listdir(folder_a)
-
-fundats = pickle.load(open('../funcom/fundats-j1.pkl', 'rb'))
-allfids = list(fundats.keys())
-
-#fundats_r = ray.put(fundats_o)
-
-numfids = len(allfids)
-nfsplit = int(numfids / 50)
-
-fids_a_split = [allfids[i:i+nfsplit] for i in range(0, numfids, nfsplit)]
-
-#futures = list()
-
-partstart = int(sys.argv[1])
-partend = int(sys.argv[2])
-
-#@ray.remote
-def loopiter(partnum, fids_a_part):
-
-    if partnum < partstart or partnum >= partend:
-        return
-
-#    fundats = ray.get(fundats_r)
-
-    if os.path.isfile(f'fc_lsh_parts/fc_lsh_p{partnum}.pkl'):
-        lsh = pickle.load(open(f'fc_lsh_parts/fc_lsh_p{partnum}.pkl', 'rb'))
+    lsh_path = lshdir + f'/fc_lsh_p{partnum}.pkl' 
+    if os.path.isfile(lsh_path):
+        lsh = pickle.load(open(lsh_path, 'rb'))
     else:
-        lsh = MinHashLSH(threshold=0.70, num_perm=128)
+        lsh = MinHashLSH(threshold=threshold, num_perm=128)
         # Generate MinHash signatures for all files in folder A
         for fid in tqdm(fids_a_part, desc=f'processing fids part {partnum}'):
             content = fundats[fid]
@@ -56,29 +27,12 @@ def loopiter(partnum, fids_a_part):
             # Add the signature to the LSH index
             lsh.insert(fid, minhash)
 
-        with open(f'/home/cmc/dev/projects/datasets/funcom/fc_lsh_parts/fc_lsh_p{partnum}.pkl', 'wb') as f:
+        with open(lsh_path, 'wb') as f:
             pickle.dump(lsh, f)
 
-# Deduplicate files in folder B
-#for filename in os.listdir(folder_b):
-#    if filename.endswith('.txt'):
-#        filepath = os.path.join(folder_b, filename)
-#        with open(filepath, 'r') as f:
-#            content = f.read()
-#            # Generate a MinHash signature for the file
-#            minhash = MinHash(num_perm=128)
-#            for word in content.split():
-#                minhash.update(word.encode('utf-8'))
-#            # Query the LSH index to see if there are similar files in folder A
-#            matches = lsh.query(minhash)
-#            if len(matches) > 0:
-#                # Remove the file from folder B if there is a match in folder A
-#                os.remove(filepath)
-#                print(f'{filename} removed from folder B.')
+    outf = open(dedup_outfile, 'a')
 
-    outf = open('dedup_testfids.txt', 'a')
-
-    with open(file_b, 'r') as fb:
+    with open(test_filename, 'r') as fb:
         for line in tqdm(fb):
             (fid, tdat) = line.split('<SEP>')
             fid = int(fid)
@@ -92,21 +46,33 @@ def loopiter(partnum, fids_a_part):
 
             if len(matches) != 0:
                 print(f'{fid}\t{matches}', file=outf)
-                #print(f'removed {fid} due to {matches}')
 
     outf.flush()
     outf.close()
 
-    #break # debug, only run once
 
-for partnum, fids_a_part in enumerate(fids_a_split):
-    loopiter(partnum, fids_a_part)
 
-#    futures.append(loopiter.remote(partnum, fids_a_part))
+def main(test_filename:str='/nfs/projects/funcom/data/javastmt_fc/output/tdats.test', # name of your test files for deduplication
+        lsh_dir:str = 'fc_lsh_parts',
+        threshold:float=0.50,  
+        dedup_outfile:str='dedup_testfids.txt',
+        fundats_file: str = '/sorna/datasets/jam_jm52m/fundats-j1.pkl'
+        ):
+    
 
-#    if len(futures) >= NUMTHREADS:
-#        for future in futures:
-#            ray.get(future)
-#        futures = list()
+    fundats = pickle.load(open(fundats_file, 'rb'))
+    allfids = list(fundats.keys())
 
+
+    numfids = len(allfids)
+    nfsplit = int(numfids / 50)
+
+    fids_a_split = [allfids[i:i+nfsplit] for i in range(0, numfids, nfsplit)]
+
+    for partnum, fids_a_part in enumerate(fids_a_split):
+        loopiter(partnum, fids_a_part, test_filename, lsh_dir, threshold, dedup_outfile, fundats)
+
+
+if __name__=='__main__':
+    fire.Fire(main)
 

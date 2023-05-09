@@ -10,129 +10,102 @@ from datasets import Dataset
 
 import pickle
 import random
+import argparse
 
 random.seed(1337)
 
 # number of workers in .map() call
 # good number to use is ~order number of cpu cores // 2
-num_proc = 4
 
-fundats = pickle.load(open('fundats-j1.pkl', 'rb'))
+if __name__=='__main__':
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--num-proc', type=int, default=4)
+    parser.add_argument('--q90testfids-file', type=str, default='/sorna/datasets/jam_jm52m/q90testfids.pkl')
+    parser.add_argument('--fundats-file', type=str, default='/sorna/datasets/jam_jm52m/fundats-j1.pkl')
+    
+    args = parser.parse_args()
 
-fundats_fids = list(fundats.keys())
+    num_proc = outdir = args.num_proc
+    q90testfids_file = args.q90testfids_file
+    fundats_file = args.fundats_file
 
-#random.shuffle(arr)
-pt = int(len(fundats_fids) * .02)
 
-#fundats_ds = dict()
-#fundats_ds['train'] = list()
-#fundats_ds['train'] = dict()
-#fundats_ds['train']['id'] = list()
-#fundats_ds['train']['tokens'] = list()
+    fundats = pickle.load(open(fundats_file, 'rb'))
 
-q90testfids = pickle.load(open('q90testfids.pkl', 'rb'))
+    fundats_fids = list(fundats.keys())
 
-for partnum in range(0, 50):
+    pt = int(len(fundats_fids) * .02)
 
-    print(f'starting part {partnum}')
 
-    txtfiles = list()
+    q90testfids = pickle.load(open(q90testfids_file, 'rb'))
 
-    if os.path.isfile(f'bins/val_2pt_p{partnum}.bin'):
-        continue
+    for partnum in range(0, 50):
 
-    start_pt = (partnum * pt)
-    end_pt = ((partnum+1) * pt)
+        print(f'starting part {partnum}')
 
-    fundats_fids_2pt_px = fundats_fids[start_pt:end_pt]
+        txtfiles = list()
 
-    for fid in tqdm(fundats_fids_2pt_px):
-        #fundats_ds['train']['id'].append(fid)
-        #fundats_ds['train']['tokens'].append(fundats[fid])
-        #fundats_ds['train'].append(fundats[fid])
-
-        if fid in q90testfids:
+        if os.path.isfile(f'bins/val_2pt_p{partnum}.bin'):
             continue
 
-        with open(f'tmp/{fid}', 'w') as f:
-            f.write(fundats[fid])
+        start_pt = (partnum * pt)
+        end_pt = ((partnum+1) * pt)
 
-        txtfiles.append(f'tmp/{fid}')
+        fundats_fids_2pt_px = fundats_fids[start_pt:end_pt]
+
+        for fid in tqdm(fundats_fids_2pt_px):
+
+            if fid in q90testfids:
+                continue
+
+            with open(f'tmp/{fid}', 'w') as f:
+                f.write(fundats[fid])
+
+            txtfiles.append(f'tmp/{fid}')
 
 
-    #dataset = Dataset.from_dict(fundats_ds)
+        dataset = load_dataset('text', data_files={'train': txtfiles}, sample_by="document")
 
-    #txtfiles = list()
-    #for file in arr:
-    #    if file.endswith('.txt'):
-    #        txtfiles.append(txtdir + file)
+        shmdir = 'tmp/'
+        for f in os.listdir(shmdir):
+            os.remove(os.path.join(shmdir, f))
 
-    #pickle.dump(txtfiles, open('txtfiles_30pt.pkl', 'wb'))
+        pickle.dump(dataset, open(f'pkls/dataset_funcom_2pt_p{partnum}.pkl', 'wb'))
 
-    # takes 54GB in huggingface .cache dir, about 8M documents (8,013,769)
-    #dataset = load_dataset("openwebtext")
-    dataset = load_dataset('text', data_files={'train': txtfiles}, sample_by="document")
+        split_dataset = dataset['train'].train_test_split(test_size=0.0005, seed=2357, shuffle=True)
+        split_dataset['val'] = split_dataset.pop('test') # rename the test split to val
 
-    shmdir = 'tmp/'
-    for f in os.listdir(shmdir):
-        os.remove(os.path.join(shmdir, f))
 
-    pickle.dump(dataset, open(f'pkls/dataset_funcom_2pt_p{partnum}.pkl', 'wb'))
+        # we now want to tokenize the dataset. first define the encoding function (gpt2 bpe)
+        enc = tiktoken.get_encoding("gpt2")
+        def process(example):
+            ids = enc.encode_ordinary(example['text']) # encode_ordinary ignores any special tokens
+            ids.append(enc.eot_token) # add the end of text token, e.g. 50256 for gpt2 bpe
+            # note: I think eot should be prepended not appended... hmm. it's called "eot" though...
+            out = {'ids': ids, 'len': len(ids)}
+            return out
 
-    #dataset = pickle.load(open('dataset_stackoverflow.pkl', 'rb'))
+        # tokenize the dataset
+        tokenized = split_dataset.map(
+            process,
+            remove_columns=['text'],
+            desc="tokenizing the splits",
+            num_proc=num_proc,
+        )
 
-    #dataset = dataset.to_pandas()
+        # concatenate all the ids in each dataset into one large file we can use for training
+        for split, dset in tokenized.items():
+            arr_len = np.sum(dset['len'])
+            filename = os.path.join('bins/', f'{split}_2pt_p{partnum}.bin')
+            dtype = np.uint16 # (can do since enc.max_token_value == 50256 is < 2**16)
+            arr = np.memmap(filename, dtype=dtype, mode='w+', shape=(arr_len,))
 
-    # owt by default only contains the 'train' split, so create a test split
-    split_dataset = dataset['train'].train_test_split(test_size=0.0005, seed=2357, shuffle=True)
-    split_dataset['val'] = split_dataset.pop('test') # rename the test split to val
-
-    #split_dataset = pickle.load(open('split_dataset_stackoverflow.pkl', 'rb'))
-    #split_dataset['val'] = split_dataset.pop('test')
-
-    # this results in:
-    # >>> split_dataset
-    # DatasetDict({
-    #     train: Dataset({
-    #         features: ['text'],
-    #         num_rows: 8009762
-    #     })
-    #     val: Dataset({
-    #         features: ['text'],
-    #         num_rows: 4007
-    #     })
-    # })
-
-    # we now want to tokenize the dataset. first define the encoding function (gpt2 bpe)
-    enc = tiktoken.get_encoding("gpt2")
-    def process(example):
-        ids = enc.encode_ordinary(example['text']) # encode_ordinary ignores any special tokens
-        ids.append(enc.eot_token) # add the end of text token, e.g. 50256 for gpt2 bpe
-        # note: I think eot should be prepended not appended... hmm. it's called "eot" though...
-        out = {'ids': ids, 'len': len(ids)}
-        return out
-
-    # tokenize the dataset
-    tokenized = split_dataset.map(
-        process,
-        remove_columns=['text'],
-        desc="tokenizing the splits",
-        num_proc=num_proc,
-    )
-
-    # concatenate all the ids in each dataset into one large file we can use for training
-    for split, dset in tokenized.items():
-        arr_len = np.sum(dset['len'])
-        filename = os.path.join('bins/', f'{split}_2pt_p{partnum}.bin')
-        dtype = np.uint16 # (can do since enc.max_token_value == 50256 is < 2**16)
-        arr = np.memmap(filename, dtype=dtype, mode='w+', shape=(arr_len,))
-
-        print(f"writing {filename}...")
-        idx = 0
-        for example in tqdm(dset):
-            arr[idx : idx + example['len']] = example['ids']
-            idx += example['len']
-        arr.flush()
-
+            print(f"writing {filename}...")
+            idx = 0
+            for example in tqdm(dset):
+                arr[idx : idx + example['len']] = example['ids']
+                idx += example['len']
+            arr.flush()
+    
     # to read the bin files later, e.g. with numpy:
     # m = np.memmap('train.bin', dtype=np.uint16, mode='r')
