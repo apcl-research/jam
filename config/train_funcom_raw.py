@@ -9,7 +9,7 @@ wandb_project = 'funcom_raw'
 wandb_run_name = 'ft-jam350m-soj-1' #+ str(time.time())
 
 dataset = 'funcom_raw'
-init_from = 'resume'
+init_from = 'scratch'
 #init_from = 'gpt2-large'
 
 # only save checkpoints if the validation loss improves

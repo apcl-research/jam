@@ -11,6 +11,7 @@ from datasets import Dataset
 import pickle
 import random
 import argparse
+import bincomb
 
 random.seed(1337)
 
@@ -22,13 +23,14 @@ if __name__=='__main__':
     parser.add_argument('--num-proc', type=int, default=4)
     parser.add_argument('--q90testfids-file', type=str, default='/sorna/datasets/jam_jm52m/q90testfids.pkl')
     parser.add_argument('--fundats-file', type=str, default='/sorna/datasets/jam_jm52m/fundats-j1.pkl')
-    
+    parser.add_argument('--data-dir', type=str, default='bins/')
+
     args = parser.parse_args()
 
     num_proc = outdir = args.num_proc
     q90testfids_file = args.q90testfids_file
     fundats_file = args.fundats_file
-
+    data_dir = args.data_dir
 
     fundats = pickle.load(open(fundats_file, 'rb'))
 
@@ -44,8 +46,9 @@ if __name__=='__main__':
         print(f'starting part {partnum}')
 
         txtfiles = list()
+        bin_file_path = data_dir + f'/val_2pt_p{partnum}.bin'
 
-        if os.path.isfile(f'bins/val_2pt_p{partnum}.bin'):
+        if os.path.isfile(bin_file_path):
             continue
 
         start_pt = (partnum * pt)
@@ -96,7 +99,7 @@ if __name__=='__main__':
         # concatenate all the ids in each dataset into one large file we can use for training
         for split, dset in tokenized.items():
             arr_len = np.sum(dset['len'])
-            filename = os.path.join('bins/', f'{split}_2pt_p{partnum}.bin')
+            filename = os.path.join(data_dir, f'{split}_2pt_p{partnum}.bin')
             dtype = np.uint16 # (can do since enc.max_token_value == 50256 is < 2**16)
             arr = np.memmap(filename, dtype=dtype, mode='w+', shape=(arr_len,))
 
@@ -106,6 +109,8 @@ if __name__=='__main__':
                 arr[idx : idx + example['len']] = example['ids']
                 idx += example['len']
             arr.flush()
+    
+    bincomb.main('bins/')
     
     # to read the bin files later, e.g. with numpy:
     # m = np.memmap('train.bin', dtype=np.uint16, mode='r')

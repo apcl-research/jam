@@ -11,11 +11,10 @@ from datasets import Dataset
 import pickle
 import random
 import argparse
+import bincomb
 
 random.seed(1337)
 
-# number of workers in .map() call
-# good number to use is ~order number of cpu cores // 2
 
 
     
@@ -23,10 +22,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--num-proc', type=int, default=4)
     parser.add_argument('--stackoverflow_filename', type=str, default='/sorna/datasets/jam_so13m/jam_so13m.pkl')
+    parser.add_argument('--data-dir', type=str, default='bins/')
 
     args = parser.parse_args()
-    num_proc = args.num_proc
+    num_proc = args.num_proc # number of workers in .map() call # good number to use is ~order number of cpu cores // 2
     stackoverflow_filename = args.stackoverflow_filename
+    data_dir = args.data_dir
 
     stackoverflow_file = pickle.load(open(stackoverflow_filename, 'rb'))
 
@@ -37,8 +38,8 @@ if __name__ == "__main__":
 
         print(f'starting part {partnum}')
 
-
-        if os.path.isfile(f'bins/val_5pt_p{partnum}.bin'):
+        bin_filename = data_dir + f'val_5pt_p{partnum}.bin'
+        if os.path.isfile(bin_filename):
             continue
 
         start_pt = (partnum * pt)
@@ -95,7 +96,7 @@ if __name__ == "__main__":
         # concatenate all the ids in each dataset into one large file we can use for training
         for split, dset in tokenized.items():
             arr_len = np.sum(dset['len'])
-            filename = os.path.join('bins/', f'{split}_5pt_p{partnum}.bin')
+            filename = os.path.join(data_dir, f'{split}_5pt_p{partnum}.bin')
             dtype = np.uint16 # (can do since enc.max_token_value == 50256 is < 2**16)
             arr = np.memmap(filename, dtype=dtype, mode='w+', shape=(arr_len,))
 
@@ -105,6 +106,6 @@ if __name__ == "__main__":
                 arr[idx : idx + example['len']] = example['ids']
                 idx += example['len']
             arr.flush()
-
+    bincomb.main()
         # to read the bin files later, e.g. with numpy:
         # m = np.memmap('train.bin', dtype=np.uint16, mode='r')

@@ -3,10 +3,9 @@ import glob
 import numpy as np
 from tqdm import tqdm
 
-import fire
 #data_dir = os.path.join('data', dataset)
 
-def main(data_dir:str = 'bins/' # directory of your bin files
+def main(data_dir:str = '' # directory of your bin files
         ):
 
 
@@ -34,5 +33,3 @@ def main(data_dir:str = 'bins/' # directory of your bin files
 
     
 
-if __name__=='__main__':
-    fire.Fire(main)

@@ -2,9 +2,7 @@ import os
 import glob
 import numpy as np
 from tqdm import tqdm
-import fire
 
-data_dir = 'bins/'
 
 
 def main(data_dir = 'bins'):
@@ -29,6 +27,4 @@ def main(data_dir = 'bins'):
     out[:] = comb[:]
 
 
-if __name__=='__main__':
-    fire.Fire(main)
 

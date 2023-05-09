@@ -9,7 +9,7 @@ wandb_project = 'stackoverflow'
 wandb_run_name = 'ft-gpt2-300k' #+ str(time.time())
 
 dataset = 'stackoverflow'
-init_from = 'resume'
+init_from = 'scratch'
 #init_from = 'gpt2-large'
 
 # only save checkpoints if the validation loss improves
