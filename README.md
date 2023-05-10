@@ -2,7 +2,7 @@
 
 ## Code for ESEC/FSE 2023 demonstration paper, A Language Model of Java Methods with Train/Test Deduplication, by Chia-Yi Su, Aakash Bansal, Vijayanta Jain, Sepideh Ghanavati, and Collin McMillan
 
-This repository contains all the code and detailed instructions to rebuild Jam models in our [Automatic Program Comprehension Lab](https://huggingface.co/apcl) hub. You can either go through the entire process from scratch including compiling dataset for training or just finetuning the models that we provide with the dataset that we have already compile. We also provide the scripts for deduplication on test set.
+This repository contains all the code and detailed instructions to rebuild Jam models in our [Automatic Program Comprehension Lab](https://huggingface.co/apcl) hub. You can either go through the entire process from scratch including compiling dataset for training or just finetuning the models that we provide with the dataset that we have already compiled. We also provide the scripts for deduplication on test set.
 
 ## Quick Link
 - [To-do list](#to-do-list)
@@ -58,7 +58,7 @@ We release the model that we pre-trained.
 
 Likewise, you can use the script that we provide to download the model that we trained for fine-tuning or applications.
 ```
-python3 download.py --repo_id={apcl/jam}  --local_dir=./yourdir
+python3 download.py --repo_id={apcl/jam | apcl/jam_so | apcl/jam_sojm}  --local_dir=./yourdir
 ```
 
 
@@ -96,7 +96,7 @@ To generate 52 millions funcom Java methods, run the following command.
     --q90testfids-file: funcom Java methods test set ID files
     --fundats-file: Name of Java methods raw code files; It's a dictionary file with key = function id and values = raw code
   
-  You will need to download q90testfids.pkl for Java methods' ID on test set and fundats-j1.pkl as Java methods' raw code. You can download these two files in [apcl/jm52m](https://huggingface.co/datasets/apcl/jm52m) repository. You may want to refere to [Dataset](#dataset) section to see how to download these files with the script that we release.
+  You will need to download q90testfids.pkl for Java methods' ID on test set and fundats-j1.pkl as Java methods' raw code. You can download these two files in [apcl/jm52m](https://huggingface.co/datasets/apcl/jm52m) repository. You may want to refer to [Dataset](#dataset) section to see how to download these files with the script that we release.
 
 You can run the following command to generate 13 millions Stackoverflow posts data.
   ```
@@ -112,22 +112,32 @@ After generation of ``bin`` files, you can refer to step 2 of [Train from scratc
 ### Step 1: Download pre-trained models
 To finetune the model that we pre-trained, you need to download the models from this[hub](https://huggingface.co/apcl/jam). You can download the model with the following command.
 ```
-python3 download.py --repo_id=apcl/jam --local_dir=./yourdir
+python3 download.py --repo_id={apcl/jam | apcl/jam_so | apcl/jam_sojm} --local_dir=./yourdir
 ```
 ### Step 2: Fine-tune model
 ```
 python3 train.py config/finetune_funcom.py
 ```
-Note that be sure to change the ``out_dir`` in the finetune_funcom.py to the same ``dir`` as the ``--local_dir``.
+Note that be sure to change the ``out_dir`` in the finetune_funcom.py to the same ``dir`` as your ``--local_dir``.
 
 ## Inference
 ### Step 1: Download test set and extract it
 We release our test set as a ``.tar.gz`` file in [apcl/funcom-java-long](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main) repository. You can simiply run the following command to download and extract test set for inference.
+```
+python3 download_extract_file.py 
+```
+    --repo_id: the id of repository that you want to download files
+    --local_dir: directory that you want to put your files
+    --filename: name of the file that you want to download
+We have already set the default parameters to the required parameters for downloading test set. If you just want to download and extract test set, you only need to run the command above.
 
-To use the model that you train to infer the summary of Java methods, use the following command.
+### Step 2: Inference
+After you download test set, you can simiply run command below to make the inference.
+
 ```
 python sample_funcom.py --out_dir=outdir
 ```
+    --outdir: directory of the model that you want to use for inference
 
 
 ## Dataset Deduplication
@@ -141,22 +151,20 @@ python3 data/jam_jm52m/dedup_fctest.py --test_filename=tdats.test --lsh_dir=fc_l
     --threshold: control the level similarity; 0.7 would be a good threshold for Java 52 millions methods
     --dedup_outfile: output file with function id and duplicate functions id in lists
     --fundats_file: a pickle file that is a dictionary for raw function code with key = function id and value = raw code
+    --partstart: separate deduplication into several programs to speed up; minimum for partstart = 0
+    --partend: separate deduplication into several programs to speed up; maximum for partstart = 50
 To deduplicate the test data included in Stackoverflow posts, use the following command.
 ```
-python3 data/jam_so13m/dedup_stackoverflow.py --stackoverflow_textfilename_list=stackoverflow_txtfiles.pkl --fundats_filename=fundats-j1.pkl --stackoverflow_textdata_filename=jam_so13m.pkl --out_filename=dedup_testfids.txt --threshold=0.5 --test_filename=tdats.test --lsh_outdir=lsh_outdir
+python3 data/jam_so13m/dedup_stackoverflow.py --stackoverflow_text_id_filename=stackoverflow_txtfiles.pkl --fundats_file=fundats-j1.pkl --stackoverflow_text_filename=jam_so13m.pkl --dedup_outfile=dedup_testfids.txt --threshold=0.5 --test_filename=tdats.test --lsh_outdir=lsh_outdir
 ```
-    --stackoverflow_textfilename_list: a pickle file that is a list for stackoverflow file name
-    --fundats_filename: a pickle file that is a dictionary for raw function code files with key = function id and value = raw code
-    --stackoverflow_textdata_filename: a pickle file that is a dictionary for stackoverflow's posts with key = post id and value = stackoverflow post
-    --out_filename: output file with function id and duplicate functions id in lists
+    --stackoverflow_text_id_filename: a pickle file that is a list for stackoverflow file name
+    --fundats_file: a pickle file that is a dictionary for raw function code files with key = function id and value = raw code
+    --stackoverflow_text_filename: a pickle file that is a dictionary for stackoverflow's posts with key = post id and value = stackoverflow post
+    --dedup_outfile: output file with function id and duplicate functions id in lists
     --threshold: control the level similarity;
     --test_filename: file name of your test file
     --lsh_outdir: directory for lsh files
+    --partstart: separate deduplication into several programs to speed up; minimum for partstart = 0
+    --partend: separate deduplication into several programs to speed up; maximum for partstart = 100
 ## Acknowledgement
 We thank Andrej Karpathy and Daniel Grittner for their work providing the NanoGPT and NanoGPT-LoRA code. This repository forks from Daniel Grittner's [NanoGPT-LoRA](https://github.com/danielgrittner/nanoGPT-LoRA) repository.
-
-
-  
-  
-
-  
