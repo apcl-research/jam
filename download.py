@@ -10,7 +10,7 @@ def main(download_file:bool = False,
     if(not download_file):
         snapshot_download(repo_id=repo_id, local_dir=local_dir, repo_type=repo_type)
     else:
-        snapshot_download(repo_id=repo_id, filename=filename, local_dir = local_dir, repo_type=repo_type)
+        hf_hub_download(repo_id=repo_id, filename=filename, local_dir = local_dir, repo_type=repo_type)
 
 if __name__=='__main__':
     fire.Fire(main)
