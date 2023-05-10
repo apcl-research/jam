@@ -74,7 +74,7 @@ If you have multiple gpus, use the following command to train the model.
   ```
 You may want to refer to this [document](https://pytorch.org/docs/stable/elastic/run.html) to change the port number for rdzv-endpoint if you have multiple instances on the same machine. Otherwise, you will have two different training instances but updating the same model weights.
 
-## Fintuning
+## Finetuning
 If you want to finetune instead of training from scratch, you can run the following command. Before you train the model, you need to download the model from this [hub](https://huggingface.co/apcl/jam350m) with ``download.py``. You can download the model by simply running the following command.
 ```
 python3 download.py --repo_id=apcl/java52m --local_dir=./yourdir --repo_type=dataset
