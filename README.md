@@ -1,6 +1,10 @@
-# Jam
+# Jam: A Language Model of Java Methods
 
 This repository forks from [nanoGPT-LoRa](https://github.com/danielgrittner/nanoGPT-LoRA). It contains all the code and detailed instructions to rebuild Jam350m models in our [hub](https://huggingface.co/apcl/jam350m) from scratch.
+
+## Quick Link
+
+[click on this link](#dataset-generation)
 
 ## Preparation
 To set up your local environment, run the following command. We recommend you to use virtual environment for running the experiements.
