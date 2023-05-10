@@ -1,27 +1,69 @@
 # Jam: A Language Model of Java Methods
 
-This repository forks from [nanoGPT-LoRa](https://github.com/danielgrittner/nanoGPT-LoRA). It contains all the code and detailed instructions to rebuild Jam350m models in our [hub](https://huggingface.co/apcl/jam350m) from scratch.
+## Code for ESEC/FSE 2023 demonstration paper, A Language Model of Java Methods with Train/Test Deduplication, by Chia-Yi Su, Aakash Bansal, Vijayanta Jain, Sepideh Ghanavati, and Collin McMillan
+
+This repository contains all the code and detailed instructions to rebuild Jam350m models and -- in our [Automatic Program Comprehension Lab](https://huggingface.co/apcl) hub. You can either go through the entire process from scratch including compiling dataset for training or just finetuning the models that we provide with the dataset that we have already compile. We also provide the scripts for deduplication on test set.
 
 ## Quick Link
+- [Dataset](#dataset)
+- [Model](#model)
+- [To-do list]()
+- [Deduplication]()
+- [Train model with Java52m from scratch](#train-model-with-java52m-from-scratch)
+- [Train model with Stackoverflow13m from scratch](#train-model-with-stackoverflow13m-from-scratch)
+- [Fine-tuning model]()
+- [Go through entire process](#go-through-entire-process)
 
-[click on this link](#dataset-generation)
 
-## Preparation
-To set up your local environment, run the following command. We recommend you to use virtual environment for running the experiements.
+## Dataset
+We release two datasets that we use to pre-train our models. You can use the scripts that we provide to download these datasets automatically.
+
+| Datset      | Description |Link        |
+| ----------- | ----------- |------------|
+| jm52m       | jm52m is a dataset we created containing 52m Java methods from 52k Java projects. The source code originated from the Merobase and Sourcerer data releases, supplemented by our own prior work in LeClair et al. It contains code uploaded to code repositories between 2008 and 2018. We then extracted every Java method from every file and project. We removed empty methods, methods from corrupt files, and methods with parsing errors       | [link]() |
+| so13m       | so13m is a dataset containing 13m discussion threads from StackOverflow. The origin of the data is the StackExchange data dump from between January 2014 and December 2022. The threads cover a multitude of topics. This dataset serves as a natural language and (often) accompanying code in the domain of software engineering. Its inclusion could help downstream tasks depending on generating or understanding natural language.           | [link]() |
+
+To download the reuiqred datasets automatically, you can run the following command. 
+
 ```
-pip install -r requirements.txt
+python3 download.py --repo_id={apcl/jm52m | }  --local_dir=./yourdir --repo_type=dataset
 ```
-We prepare the scripts for downloading the dataset from the hub. Run the following command to download the entire repository.
-```
-python3 download.py --repo_id=apcl/java52m --local_dir=./yourdir --repo_type=dataset
-```
-  If you only want to download a specific file, run the follwing command instead.
+
+This will download the all the files in the repository. If you only want to download specific files, you can simply run the following command.
+
   ```
   python3 download.py --repo_id=apcl/java52m --download_file=True --filename=file.pkl --local_dir=./yourdir --repo_type=dataset
   ```
     --filename: the name of the file that you want to download
     --local_dir: the name of the directory that you want to put your files
     --repo_type: the type of repo that you download the file; set to dataset if you donwload files from dataset repo
+
+Note that you only need train.bin and val.bin if you only want to pre-train your models from scratch instead of going through the entire process. You can see more details on [Train model with Java52m from scratch](#train-model-with-java52m-from-scratch) and [Train model with Stackoverflow13m from scratch](#train-model-with-stackoverflow13m-from-scratch). However, if you want to go through the entire process, you can check [Go through entire process](#go-through-entire-process) section.
+
+## Model
+We release the model that we pre-trained. 
+
+
+| Model       | Description |Link        |
+| ----------- | ----------- |------------|
+| jam         | This model is trained on jm52m only and trained for one epoch, which is ∼300,000 iterations.| [link]()   |
+| jam-so      | This model is trained on so13m only and trained for one epoch, which is ∼300,000 iterations.| [link]()   |
+| jam-sojm    | This model is trained on so13m and then jm52m for one epoch each after resetting the learning rate and decay.| [link]()   |
+
+To download the reuiqred datasets automatically, you can run the following command. 
+
+
+## Train model with Java52m from scratch
+
+## Go through entire process
+
+## Train model with Stackoverflow13m from scratch
+
+## To-do list
+To set up your local environment, run the following command. We recommend you to use virtual environment for running the experiements.
+```
+pip install -r requirements.txt
+```
 
 ## Dataset generation
 To generate 52 millions funcom Java methods, run the following command.
@@ -78,7 +120,7 @@ If you have multiple gpus, use the following command to train the model.
   ```
 You may want to refer to this [document](https://pytorch.org/docs/stable/elastic/run.html) to change the port number for rdzv-endpoint if you have multiple instances on the same machine. Otherwise, you will have two different training instances but updating the same model weights.
 
-## Finetuning
+## Fine-tuning
 If you want to finetune instead of training from scratch, you can run the following command. Before you train the model, you need to download the model from this [hub](https://huggingface.co/apcl/jam350m) with ``download.py``. You can download the model by simply running the following command.
 ```
 python3 download.py --repo_id=apcl/java52m --local_dir=./yourdir --repo_type=dataset
