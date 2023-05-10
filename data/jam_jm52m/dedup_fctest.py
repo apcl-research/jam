@@ -7,10 +7,10 @@ from tqdm import tqdm
 from datasketch import MinHash, MinHashLSH
 import fire
 
-def loopiter(partnum, fids_a_part, test_filename, lshdir, threshold, dedup_outfile, fundats):
+def loopiter(partnum, fids_a_part, test_filename, lshdir, threshold, dedup_outfile, fundats, partstart, partend):
 
-    #if partnum < partstart or partnum >= partend:
-    #    return
+    if partnum < partstart or partnum >= partend:
+        return
 
     lsh_path = lshdir + f'/fc_lsh_p{partnum}.pkl' 
     if os.path.isfile(lsh_path):
@@ -56,7 +56,9 @@ def main(test_filename:str='/nfs/projects/funcom/data/javastmt_fc/output/tdats.t
         lsh_dir:str = 'fc_lsh_parts',
         threshold:float=0.50,  
         dedup_outfile:str='dedup_testfids.txt',
-        fundats_file: str = '/sorna/datasets/jam_jm52m/fundats-j1.pkl'
+        fundats_file: str = '/sorna/datasets/jam_jm52m/fundats-j1.pkl',
+        partstart:int =0,  # separate it into several programs to speed up; minimum for partstart = 0
+        partend:int=50     # maximum for partend = 50
         ):
     
 
@@ -70,7 +72,7 @@ def main(test_filename:str='/nfs/projects/funcom/data/javastmt_fc/output/tdats.t
     fids_a_split = [allfids[i:i+nfsplit] for i in range(0, numfids, nfsplit)]
 
     for partnum, fids_a_part in enumerate(fids_a_split):
-        loopiter(partnum, fids_a_part, test_filename, lsh_dir, threshold, dedup_outfile, fundats)
+        loopiter(partnum, fids_a_part, test_filename, lsh_dir, threshold, dedup_outfile, fundats, partstart, partend)
 
 
 if __name__=='__main__':
