@@ -9,7 +9,7 @@ import fire
 
 
 def loopiter(partnum, files_a_part, fundats, stackoverflow_dats, test_filename, threshold, dedup_outfile, lsh_dir, partstart, partend):
-    lsh_path = lshdir + f'/so_lsh_p{partnum}.pkl' 
+    lsh_path = lsh_dir + f'/so_lsh_p{partnum}.pkl' 
     if partnum < partstart or partnum >= partend:
         return
     if os.path.isfile(lsh_path):
@@ -48,9 +48,9 @@ def loopiter(partnum, files_a_part, fundats, stackoverflow_dats, test_filename, 
     outf.close()
 
 def main(test_filename:str= '/nfs/projects/funcom/data/javastmt_fc/output/tdats.test',
-         stackoverflow_text_id_filename:str='stackoverflow_txtfiles.pkl',
+         stackoverflow_text_id_filename:str='/sorna/datasets/jam_so13m/stackoverflow_txtfiles.pkl',
          fundats_file: str = '/sorna/datasets/jam_jm52m/fundats-j1.pkl',
-         stackoverflow_text_filename:str='jam_so13m.pkl',
+         stackoverflow_text_filename:str='/sorna/datasets/jam_so13m/jam_so13m.pkl',
          lsh_dir:str='so_lsh_parts',
          dedup_outfile:str='dedup_testfids.txt',
          threshold:float=0.50,
