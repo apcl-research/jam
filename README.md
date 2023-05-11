@@ -23,7 +23,6 @@ We thank Andrej Karpathy and Daniel Grittner for their work providing the NanoGP
 - [Inference](#inference)
 - [Entire process](#entire-process)
 - [Train from scratch](#train-from-scratch)
-- [Acknowledgement](#acknowledgement)
 
 ## To-do list
 To set up your local environment, run the following command. We recommend the use of a virtual environment for running the experiements.
