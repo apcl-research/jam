@@ -1,14 +1,14 @@
 import time
 
 #out_dir = 'out-owt-gpt2mini'
-out_dir = 'out-funcom-java-long-raw-jam350m-so'
+out_dir = 'out-funcom_q90_raw-jam350m-so'
 eval_interval = 100
 eval_iters = 80
 wandb_log = True
-wandb_project = 'funcom-java-long-raw'
+wandb_project = 'funcom-q90-raw'
 wandb_run_name = 'ft-jam350m-so-1'
 
-dataset = 'funcom-java-long_raw'
+dataset = 'funcom_q90_raw'
 init_from = 'resume'
 
 # only save checkpoints if the validation loss improves
