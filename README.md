@@ -151,8 +151,8 @@ python3 data/jam_jm52m/dedup_fctest.py --test_filename=tdats.test --lsh_dir=fc_l
     --threshold: control the level similarity; 0.7 would be a good threshold for Java 52 millions methods
     --dedup_outfile: output file with function id and duplicate functions id in lists
     --fundats_file: a pickle file that is a dictionary for raw function code with key = function id and value = raw code
-    --partstart: separate deduplication into several programs to speed up; minimum for partstart = 0
-    --partend: separate deduplication into several programs to speed up; maximum for partstart = 50
+    --partstart: separate deduplication into several programs to speed up; minimum value 0
+    --partend: separate deduplication into several programs to speed up; maximum value 50
 To deduplicate the test data included in Stackoverflow posts, use the following command.
 ```
 python3 data/jam_so13m/dedup_stackoverflow.py --stackoverflow_text_id_filename=stackoverflow_txtfiles.pkl --fundats_file=fundats-j1.pkl --stackoverflow_text_filename=jam_so13m.pkl --dedup_outfile=dedup_testfids.txt --threshold=0.5 --test_filename=tdats.test --lsh_outdir=lsh_outdir
