@@ -16,11 +16,11 @@ We thank Andrej Karpathy and Daniel Grittner for their work providing the NanoGP
 
 ## Quick Link
 - [To-do list](#to-do-list)
-- [Dataset](#dataset)
-- [Model](#model)
+- [Pre-trained Model Checkpoints](#model)
 - [Fine-tuning](#fine-tuning)
 - [Deduplication toolkit](#dataset-deduplication)
 - [Inference](#inference)
+- [Dataset](#dataset)
 - [Entire process](#entire-process)
 - [Train from scratch](#train-from-scratch)
 
