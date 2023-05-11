@@ -175,7 +175,7 @@ If you want to train your own models from scratch and you only have one gpu, use
   
 If you have multiple gpus, use the following command to train the model.
   ```
-  torchrun --standalone --nproc_per_node=1 train.py config/train_funcom_raw.py --out_dir=jam350m_jm --rdzv-backend=c10d  --rdzv-endpoint=localhost:0 --nproc-per-node=1
+  torchrun --rdzv-backend=c10d --rdzv-endpoint=localhost:0 --nnodes=1 --nproc-per-node=1 train.py config/train_funcom_raw.py --out_dir=jam350m_jm
   ```
 You may want to refer to this [document](https://pytorch.org/docs/stable/elastic/run.html) to change the port number for rdzv-endpoint if you have multiple instances on the same machine. Otherwise, you will have two different training instances but updating the same model weights.
 
