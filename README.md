@@ -36,7 +36,7 @@ We release two datasets that we use to pre-train our models. You can use the scr
 
 | Datset      | Description |Link        |
 | ----------- | ----------- |------------|
-| jm52m       | jm52m is a dataset we created containing 52m Java methods from 52k Java projects. The source code originated from the Merobase and Sourcerer data releases, supplemented by our own prior work in [LeClair et al.]() It contains code uploaded to code repositories between 2008 and 2018. We then extracted every Java method from every file and project. We removed empty methods, methods from corrupt files, and methods with parsing errors       | [link](https://huggingface.co/datasets/apcl/jm52m) |
+| jm52m       | jm52m is a dataset we created containing 52m Java methods from 52k Java projects. The source code originated from the Merobase and Sourcerer data releases, supplemented by our own prior work in [LeClair et al.](https://arxiv.org/abs/1904.02660) It contains code uploaded to code repositories between 2008 and 2018. We then extracted every Java method from every file and project. We removed empty methods, methods from corrupt files, and methods with parsing errors       | [link](https://huggingface.co/datasets/apcl/jm52m) |
 | so13m       | so13m is a dataset containing 13m discussion threads from StackOverflow. The origin of the data is the StackExchange data dump from between January 2014 and December 2022. The threads cover a multitude of topics. This dataset serves as a natural language and (often) accompanying code in the domain of software engineering. Its inclusion could help downstream tasks depending on generating or understanding natural language.           | [link](https://huggingface.co/datasets/apcl/so13m) |
 
 To download the required datasets automatically, you can run the following command. 
@@ -83,7 +83,7 @@ Note, the repo_type to download the model is different from repo_type to downloa
 
 | Datset      | Description |Link        |
 | ----------- | ----------- |------------|
-| java-funcom-long  | is a dataset by [Bansal et al.]() we use to fine tune our model for source code summarization  | [link]()
+| funcom-java-long  | is a dataset by [Bansal et al.]() we use to fine tune our model for source code summarization  | [link](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main)
 
 
 ### Step 3: Fine-tune model
