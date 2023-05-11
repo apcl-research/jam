@@ -30,32 +30,6 @@ To set up your local environment, run the following command. We recommend the us
 pip install -r requirements.txt
 ```
 
-## Dataset
-We release two datasets that we use to pre-train our models. You can use the scripts that we provide to download these datasets automatically.
-
-| Datset      | Description |Link        |
-| ----------- | ----------- |------------|
-| jm52m       | jm52m is a dataset we created containing 52m Java methods from 52k Java projects. The source code originated from the Merobase and Sourcerer data releases, supplemented by our own prior work in [LeClair et al.](https://arxiv.org/abs/1904.02660) It contains code uploaded to code repositories between 2008 and 2018. We then extracted every Java method from every file and project. We removed empty methods, methods from corrupt files, and methods with parsing errors       | [link](https://huggingface.co/datasets/apcl/jm52m) |
-| so13m       | so13m is a dataset containing 13m discussion threads from StackOverflow. The origin of the data is the StackExchange data dump from between January 2014 and December 2022. The threads cover a multitude of topics. This dataset serves as a natural language and (often) accompanying code in the domain of software engineering. Its inclusion could help downstream tasks depending on generating or understanding natural language.           | [link](https://huggingface.co/datasets/apcl/so13m) |
-
-To download the required datasets automatically, you can run the following command. 
-
-```
-python3 download.py --repo_id={apcl/jm52m | apcl/so13m}  --local_dir=./data/yourdir --repo_type=dataset
-```
-
-This will download the all the files in the repository. If you only want to download specific files, you can simply run the following command.
-
-  ```
-  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename=file.pkl --local_dir=./data/yourdir --repo_type=dataset
-  ```
-    --repo_id: either apcl/jm52m or apcl/so13m; apcl/jm52m is for 52 million Java methods and apcl/so13m is for 13 million stackoverflow posts.
-    --filename: the name of the file that you want to download
-    --local_dir: the name of the directory that you want to put your files
-    --repo_type: the type of repo that you download the file; set to dataset if you donwload files from dataset repo
-
-Note that you only need ``train.bin`` and ``val.bin`` if you only want to build your Jam models from scratch instead of going through the entire process. You can see more details on [Train from scratch](#train-from-scratch). However, if you want to go through the entire process, you can check [Entire process](#entire-process) section.
-
 ## Model
 We release the model that we pre-trained. 
 
@@ -139,6 +113,31 @@ python sample_funcom.py --out_dir=outdir
 ```
     --outdir: directory of the model that you want to use for inference
 
+## Dataset
+We release two datasets that we use to pre-train our models. You can use the scripts that we provide to download these datasets automatically.
+
+| Datset      | Description |Link        |
+| ----------- | ----------- |------------|
+| jm52m       | jm52m is a dataset we created containing 52m Java methods from 52k Java projects. The source code originated from the Merobase and Sourcerer data releases, supplemented by our own prior work in [LeClair et al.](https://arxiv.org/abs/1904.02660) It contains code uploaded to code repositories between 2008 and 2018. We then extracted every Java method from every file and project. We removed empty methods, methods from corrupt files, and methods with parsing errors       | [link](https://huggingface.co/datasets/apcl/jm52m) |
+| so13m       | so13m is a dataset containing 13m discussion threads from StackOverflow. The origin of the data is the StackExchange data dump from between January 2014 and December 2022. The threads cover a multitude of topics. This dataset serves as a natural language and (often) accompanying code in the domain of software engineering. Its inclusion could help downstream tasks depending on generating or understanding natural language.           | [link](https://huggingface.co/datasets/apcl/so13m) |
+
+To download the required datasets automatically, you can run the following command. 
+
+```
+python3 download.py --repo_id={apcl/jm52m | apcl/so13m}  --local_dir=./data/yourdir --repo_type=dataset
+```
+
+This will download the all the files in the repository. If you only want to download specific files, you can simply run the following command.
+
+  ```
+  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename=file.pkl --local_dir=./data/yourdir --repo_type=dataset
+  ```
+    --repo_id: either apcl/jm52m or apcl/so13m; apcl/jm52m is for 52 million Java methods and apcl/so13m is for 13 million stackoverflow posts.
+    --filename: the name of the file that you want to download
+    --local_dir: the name of the directory that you want to put your files
+    --repo_type: the type of repo that you download the file; set to dataset if you donwload files from dataset repo
+
+Note that you only need ``train.bin`` and ``val.bin`` if you only want to build your Jam models from scratch instead of going through the entire process. You can see more details on [Train from scratch](#train-from-scratch). However, if you want to go through the entire process, you can check [Entire process](#entire-process) section.
 ## Entire process
 To go through the entire process, you will need an extra step to generate the ``bin`` files by your own and use these files to train your own models. 
 
