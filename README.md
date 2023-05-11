@@ -1,8 +1,18 @@
 # Jam: A Language Model of Java Methods
 
-## Code for ESEC/FSE 2023 demonstration paper, A Language Model trained on Java Methods with Train/Test Deduplication, by Chia-Yi Su, Aakash Bansal, Vijayanta Jain, Sepideh Ghanavati, and Collin McMillan
+## Code for ESEC/FSE 2023 demonstration paper, A Language Model trained on Java Methods with Train/Test Deduplication 
+
+Presented by 
+[Chia-Yi Su](https://chiayisu.github.io)
+[Aakash Bansal](https://sites.nd.edu/abansal)
+[Vijayanta Jain](https://sites.google.com/maine.edu/vijayantajain/home)
+[Sepideh Ghanavati](https://www.sepidehghanavati.com)
+[Collin McMillan](https://www3.nd.edu/~cmc/)
 
 This repository contains all the code and detailed instructions to rebuild Jam models in our HuggingFace [Automatic Program Comprehension Lab](https://huggingface.co/apcl) hub. You can either go through the entire process from scratch including tokenization of raw source code data or just finetuning the models that we provide with the dataset that we provide as tokenized bins. We also provide the scripts for deduplication of any future test sets.
+
+## Acknowledgement
+We thank Andrej Karpathy and Daniel Grittner for their work providing the NanoGPT and NanoGPT-LoRA code. This repository forks from Daniel Grittner's [NanoGPT-LoRA](https://github.com/danielgrittner/nanoGPT-LoRA) repository, which is a forked from the original [NanoGPT](https://github.com/karpathy/nanoGPT) by Andrej Karpathy. 
 
 ## Quick Link
 - [To-do list](#to-do-list)
@@ -166,5 +176,3 @@ python3 data/jam_so13m/dedup_stackoverflow.py --stackoverflow_text_id_filename=s
     --lsh_outdir: directory for lsh files
     --partstart: separate deduplication into several programs to speed up; minimum for partstart = 0
     --partend: separate deduplication into several programs to speed up; maximum for partstart = 100
-## Acknowledgement
-We thank Andrej Karpathy and Daniel Grittner for their work providing the NanoGPT and NanoGPT-LoRA code. This repository forks from Daniel Grittner's [NanoGPT-LoRA](https://github.com/danielgrittner/nanoGPT-LoRA) repository.
