@@ -41,25 +41,20 @@ We release the model that we pre-trained.
 
 Likewise, you can use the script that we provide to download the model that we trained for fine-tuning or applications.
 ```
-python3 download.py --repo_id={apcl/jam | apcl/jam_so | apcl/jam_sojm}  --local_dir=./yourdir
+python3 download.py --repo_id=apcl/jam --local_dir=./yourdir --repo_type=model
 ```
+Please replace the --repo_id tag with the ``jam_so`` or ``jam_sojm`` depending on the model you wish to finetune.
 
 ## Fine-tuning
-### Step 1: Download pre-trained models
-To finetune the model that we pre-trained, you need to download the models from this[hub](https://huggingface.co/apcl/jam). You can download the model with the following command.
-```
-python3 download.py --repo_id={apcl/jam | apcl/jam_so | apcl/jam_sojm} --local_dir=./yourdir --repo_type=model
-```
-Note, the repo_type to download the model is different from repo_type to download the several datasets.
 
-### Step 2: Download the finetuning dataset
+### Step 1: Download the finetuning dataset
 
 | Datset      | Description |Link        |
 | ----------- | ----------- |------------|
 | funcom-java-long  | is a dataset by [Bansal et al.]() we use to fine tune and test our model for source code summarization. This dataset is also annotate as "q90" in our scripts | [link](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main)
 
 
-### Step 3: Fine-tune model
+### Step 2: Fine-tune model
 ```
 python3 train.py config/finetune_funcom.py
 ```
