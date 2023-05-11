@@ -58,7 +58,7 @@ Please replace the --repo_id tag with the ``apcl/jam_so`` or ``apcl/jam_sojm`` d
 ```
 python3 train.py config/finetune_funcom.py
 ```
-Note that be sure to change the ``out_dir`` in the finetune_funcom.py to the same ``dir`` as your ``--local_dir``.
+Note that you need to change the ``out_dir`` in the finetune_funcom.py to the same ``dir`` as your ``--local_dir``.
 
 ## Dataset Deduplication
 
