@@ -41,13 +41,13 @@ We release two datasets that we use to pre-train our models. You can use the scr
 To download the required datasets automatically, you can run the following command. 
 
 ```
-python3 download.py --repo_id={apcl/jm52m | apcl/so13m}  --local_dir=./yourdir --repo_type=dataset
+python3 download.py --repo_id={apcl/jm52m | apcl/so13m}  --local_dir=./data/yourdir --repo_type=dataset
 ```
 
 This will download the all the files in the repository. If you only want to download specific files, you can simply run the following command.
 
   ```
-  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename=file.pkl --local_dir=./yourdir --repo_type=dataset
+  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename=file.pkl --local_dir=./data/yourdir --repo_type=dataset
   ```
     --repo_id: either apcl/jm52m or apcl/so13m; apcl/jm52m is for 52 million Java methods and apcl/so13m is for 13 million stackoverflow posts.
     --filename: the name of the file that you want to download
