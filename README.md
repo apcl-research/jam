@@ -92,6 +92,18 @@ python3 train.py config/finetune_funcom.py
 Note that be sure to change the ``out_dir`` in the finetune_funcom.py to the same ``dir`` as your ``--local_dir``.
 
 ## Dataset Deduplication
+
+### Step 1: Download test set and extract it
+We release our test set as a ``.tar.gz`` file in [apcl/funcom-java-long](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main) repository. You can simiply run the following command to download and extract test set for inference.
+```
+python3 download_extract_file.py 
+```
+    --repo_id: the id of repository that you want to download files
+    --local_dir: directory that you want to put your files
+    --filename: name of the file that you want to download
+We have already set the default parameters to the required parameters for downloading test set. If you just want to download and extract test set, you only need to run the command above.
+
+### Step 1: Deduplication
 To deduplicate the test data included in the training set, use the following command to deduplicate test data included in Java methods
 
 ```
@@ -119,18 +131,8 @@ python3 data/jam_so13m/dedup_stackoverflow.py --stackoverflow_text_id_filename=s
     --partend: separate deduplication into several programs to speed up; maximum for partstart = 100
     
 ## Inference
-### Step 1: Download test set and extract it
-We release our test set as a ``.tar.gz`` file in [apcl/funcom-java-long](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main) repository. You can simiply run the following command to download and extract test set for inference.
-```
-python3 download_extract_file.py 
-```
-    --repo_id: the id of repository that you want to download files
-    --local_dir: directory that you want to put your files
-    --filename: name of the file that you want to download
-We have already set the default parameters to the required parameters for downloading test set. If you just want to download and extract test set, you only need to run the command above.
 
-### Step 2: Inference
-After you download test set, you can simiply run command below to make the inference.
+After you download and deduplicate the test set, you can simiply run command below for inference.
 
 ```
 python sample_funcom.py --out_dir=outdir
