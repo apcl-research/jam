@@ -18,11 +18,11 @@ We thank Andrej Karpathy and Daniel Grittner for their work providing the NanoGP
 - [To-do list](#to-do-list)
 - [Dataset](#dataset)
 - [Model](#model)
-- [Train from scratch](#train-from-scratch)
 - [Fine-tuning](#fine-tuning)
-- [Entire process](#entire-process)
-- [Inference](#inference)
 - [Deduplication toolkit](#dataset-deduplication)
+- [Inference](#inference)
+- [Entire process](#entire-process)
+- [Train from scratch](#train-from-scratch)
 - [Acknowledgement](#acknowledgement)
 
 ## To-do list
@@ -71,53 +71,6 @@ Likewise, you can use the script that we provide to download the model that we t
 python3 download.py --repo_id={apcl/jam | apcl/jam_so | apcl/jam_sojm}  --local_dir=./yourdir
 ```
 
-
-## Train from scratch
-### Step 1: Download bin files
- You will need both ``train.bin`` and ``val.bin`` to train your models. ``bin`` files can be downloaded in the following command.
-  ```
-  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename={train.bin | val.bin} --local_dir=./yourdir --repo_type=dataset
-  ```
-  Note that you will need to put these two files into the same directory as ``train.py``.
-### Step 2: Train models
-If you want to train your own models from scratch and you only have one gpu, use the following command to train the model. 
-  ```
-  python3 train.py config/{train_funcom_raw | train_stackoverflow}.py
-  ```
-    train_funcom_raw: traninig with 52 millions funcom Java methods
-
-    train_stackoverflow: training with 13 millions stackoverflow posts from sratch
-  
-If you have multiple gpus, use the following command to train the model.
-  ```
-  torchrun --standalone --nproc_per_node=1 train.py config/train_funcom_raw.py --out_dir=jam350m_jm --rdzv-backend=c10d  --rdzv-endpoint=localhost:0 --nproc-per-node=1
-  ```
-You may want to refer to this [document](https://pytorch.org/docs/stable/elastic/run.html) to change the port number for rdzv-endpoint if you have multiple instances on the same machine. Otherwise, you will have two different training instances but updating the same model weights.
-
-## Entire process
-To go through the entire process, you will need an extra step to generate the ``bin`` files by your own and use these files to train your own models. 
-
-### Step1: Dataset generation
-To generate 52 millions funcom Java methods, run the following command.
-  ```
-  python3 data/jam_jm52m/prepare_fc_raw.py --num-proc=4 --q90testfids-file=q90testfids.pkl --fundats-file=fundats-j1.pkl
-  ```
-    --num-proc: number of workers in .map() call
-    --q90testfids-file: funcom Java methods test set ID files
-    --fundats-file: Name of Java methods raw code files; It's a dictionary file with key = function id and values = raw code
-  
-  You will need to download q90testfids.pkl for Java methods' ID on test set and fundats-j1.pkl as Java methods' raw code. You can download these two files in [apcl/jm52m](https://huggingface.co/datasets/apcl/jm52m) repository. You may want to refer to [Dataset](#dataset) section to see how to download these files with the script that we release.
-
-You can run the following command to generate 13 millions Stackoverflow posts data.
-  ```
-  python3 data/jam_so13m/prepare_stackoverflow.py --num-proc=4 --stackoverflow_filename=jam_so13m.pkl
-  ```
-    --stackoverflow_filename: Name of file for stackoverflow data; This is a dictionary file with key = post id and values = post text
-After the script is done, it will have both ``train.bin`` and ``val.bin`` in either ``data/jam_jm52m`` or ``data/jam_so13m`` directory. Be sure to move it to the same directory as ``train.py``.
-
-### Step2: Train models
-After generation of ``bin`` files, you can refer to step 2 of [Train from scratch](#train-from-scratch) section for training your models.
-
 ## Fine-tuning
 ### Step 1: Download pre-trained models
 To finetune the model that we pre-trained, you need to download the models from this[hub](https://huggingface.co/apcl/jam). You can download the model with the following command.
@@ -129,26 +82,6 @@ python3 download.py --repo_id={apcl/jam | apcl/jam_so | apcl/jam_sojm} --local_d
 python3 train.py config/finetune_funcom.py
 ```
 Note that be sure to change the ``out_dir`` in the finetune_funcom.py to the same ``dir`` as your ``--local_dir``.
-
-## Inference
-### Step 1: Download test set and extract it
-We release our test set as a ``.tar.gz`` file in [apcl/funcom-java-long](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main) repository. You can simiply run the following command to download and extract test set for inference.
-```
-python3 download_extract_file.py 
-```
-    --repo_id: the id of repository that you want to download files
-    --local_dir: directory that you want to put your files
-    --filename: name of the file that you want to download
-We have already set the default parameters to the required parameters for downloading test set. If you just want to download and extract test set, you only need to run the command above.
-
-### Step 2: Inference
-After you download test set, you can simiply run command below to make the inference.
-
-```
-python sample_funcom.py --out_dir=outdir
-```
-    --outdir: directory of the model that you want to use for inference
-
 
 ## Dataset Deduplication
 To deduplicate the test data included in the training set, use the following command to deduplicate test data included in Java methods
@@ -176,3 +109,68 @@ python3 data/jam_so13m/dedup_stackoverflow.py --stackoverflow_text_id_filename=s
     --lsh_outdir: directory for lsh files
     --partstart: separate deduplication into several programs to speed up; minimum for partstart = 0
     --partend: separate deduplication into several programs to speed up; maximum for partstart = 100
+    
+## Inference
+### Step 1: Download test set and extract it
+We release our test set as a ``.tar.gz`` file in [apcl/funcom-java-long](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main) repository. You can simiply run the following command to download and extract test set for inference.
+```
+python3 download_extract_file.py 
+```
+    --repo_id: the id of repository that you want to download files
+    --local_dir: directory that you want to put your files
+    --filename: name of the file that you want to download
+We have already set the default parameters to the required parameters for downloading test set. If you just want to download and extract test set, you only need to run the command above.
+
+### Step 2: Inference
+After you download test set, you can simiply run command below to make the inference.
+
+```
+python sample_funcom.py --out_dir=outdir
+```
+    --outdir: directory of the model that you want to use for inference
+
+## Entire process
+To go through the entire process, you will need an extra step to generate the ``bin`` files by your own and use these files to train your own models. 
+
+### Step1: Dataset generation
+To generate 52 millions funcom Java methods, run the following command.
+  ```
+  python3 data/jam_jm52m/prepare_fc_raw.py --num-proc=4 --q90testfids-file=q90testfids.pkl --fundats-file=fundats-j1.pkl
+  ```
+    --num-proc: number of workers in .map() call
+    --q90testfids-file: funcom Java methods test set ID files
+    --fundats-file: Name of Java methods raw code files; It's a dictionary file with key = function id and values = raw code
+  
+  You will need to download q90testfids.pkl for Java methods' ID on test set and fundats-j1.pkl as Java methods' raw code. You can download these two files in [apcl/jm52m](https://huggingface.co/datasets/apcl/jm52m) repository. You may want to refer to [Dataset](#dataset) section to see how to download these files with the script that we release.
+
+You can run the following command to generate 13 millions Stackoverflow posts data.
+  ```
+  python3 data/jam_so13m/prepare_stackoverflow.py --num-proc=4 --stackoverflow_filename=jam_so13m.pkl
+  ```
+    --stackoverflow_filename: Name of file for stackoverflow data; This is a dictionary file with key = post id and values = post text
+After the script is done, it will have both ``train.bin`` and ``val.bin`` in either ``data/jam_jm52m`` or ``data/jam_so13m`` directory. Be sure to move it to the same directory as ``train.py``.
+
+### Step2: Train models
+After generation of ``bin`` files, you can refer to step 2 of [Train from scratch](#train-from-scratch) section for training your models.
+
+## Train from scratch
+### Step 1: Download bin files
+ You will need both ``train.bin`` and ``val.bin`` to train your models. ``bin`` files can be downloaded in the following command.
+  ```
+  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename={train.bin | val.bin} --local_dir=./yourdir --repo_type=dataset
+  ```
+  Note that you will need to put these two files into the same directory as ``train.py``.
+### Step 2: Train models
+If you want to train your own models from scratch and you only have one gpu, use the following command to train the model. 
+  ```
+  python3 train.py config/{train_funcom_raw | train_stackoverflow}.py
+  ```
+    train_funcom_raw: traninig with 52 millions funcom Java methods
+
+    train_stackoverflow: training with 13 millions stackoverflow posts from sratch
+  
+If you have multiple gpus, use the following command to train the model.
+  ```
+  torchrun --standalone --nproc_per_node=1 train.py config/train_funcom_raw.py --out_dir=jam350m_jm --rdzv-backend=c10d  --rdzv-endpoint=localhost:0 --nproc-per-node=1
+  ```
+You may want to refer to this [document](https://pytorch.org/docs/stable/elastic/run.html) to change the port number for rdzv-endpoint if you have multiple instances on the same machine. Otherwise, you will have two different training instances but updating the same model weights.
