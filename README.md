@@ -103,7 +103,7 @@ python3 download_extract_file.py
     --filename: name of the file that you want to download
 We have already set the default parameters to the required parameters for downloading test set. If you just want to download and extract test set, you only need to run the command above.
 
-### Step 1: Deduplication
+### Step 2: Deduplication
 To deduplicate the test data included in the training set, use the following command to deduplicate test data included in Java methods
 
 ```
