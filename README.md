@@ -83,7 +83,7 @@ Note, the repo_type to download the model is different from repo_type to downloa
 
 | Datset      | Description |Link        |
 | ----------- | ----------- |------------|
-| funcom-java-long  | is a dataset by [Bansal et al.]() we use to fine tune our model for source code summarization  | [link](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main)
+| funcom-java-long  | is a dataset by [Bansal et al.]() we use to fine tune and test our model for source code summarization. This dataset is also annotate as "q90" in our scripts | [link](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main)
 
 
 ### Step 3: Fine-tune model
