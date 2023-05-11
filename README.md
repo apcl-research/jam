@@ -167,7 +167,7 @@ After generation of ``bin`` files, you can refer to step 2 of [Train from scratc
 ### Step 1: Download bin files
  You will need both ``train.bin`` and ``val.bin`` to train your models. ``bin`` files can be downloaded in the following command.
   ```
-  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename={train.bin | val.bin} --local_dir=./yourdir --repo_type=dataset
+  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename={train.bin | val.bin} --local_dir=./data/yourdir --repo_type=dataset
   ```
   Note that you will need to put these two files into the same directory as ``train.py``.
 ### Step 2: Train models
