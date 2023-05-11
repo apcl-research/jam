@@ -41,9 +41,9 @@ We release the model that we pre-trained.
 
 Likewise, you can use the script that we provide to download the model that we trained for fine-tuning or applications.
 ```
-python3 download.py --repo_id=apcl/jam --local_dir=./yourdir --repo_type=model
+python3 download.py --repo_id=apcl/jam --repo_type=model
 ```
-Please replace the --repo_id tag with the ``jam_so`` or ``jam_sojm`` depending on the model you wish to finetune.
+Please replace the --repo_id tag with the ``apcl/jam_so`` or ``apcl/jam_sojm`` depending on the model you wish to finetune.
 
 ## Fine-tuning
 
