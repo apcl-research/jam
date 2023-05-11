@@ -38,9 +38,9 @@ python3 download.py --repo_id={apcl/jm52m | apcl/so13m}  --local_dir=./yourdir -
 This will download the all the files in the repository. If you only want to download specific files, you can simply run the following command.
 
   ```
-  python3 download.py --repo_id={apcl/java52m | apcl/so13m} --download_file=True --filename=file.pkl --local_dir=./yourdir --repo_type=dataset
+  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename=file.pkl --local_dir=./yourdir --repo_type=dataset
   ```
-    --repo_id: either apcl/java52m or apcl/so13m; apcl/java52m is for 52 million Java methods and apcl/so13m is for 13 million stackoverflow posts.
+    --repo_id: either apcl/jm52m or apcl/so13m; apcl/jm52m is for 52 million Java methods and apcl/so13m is for 13 million stackoverflow posts.
     --filename: the name of the file that you want to download
     --local_dir: the name of the directory that you want to put your files
     --repo_type: the type of repo that you download the file; set to dataset if you donwload files from dataset repo
@@ -66,7 +66,7 @@ python3 download.py --repo_id={apcl/jam | apcl/jam_so | apcl/jam_sojm}  --local_
 ### Step 1: Download bin files
  You will need both ``train.bin`` and ``val.bin`` to train your models. ``bin`` files can be downloaded in the following command.
   ```
-  python3 download.py --repo_id={apcl/java52m | apcl/so13m} --download_file=True --filename={train.bin | val.bin} --local_dir=./yourdir --repo_type=dataset
+  python3 download.py --repo_id={apcl/jm52m | apcl/so13m} --download_file=True --filename={train.bin | val.bin} --local_dir=./yourdir --repo_type=dataset
   ```
   Note that you will need to put these two files into the same directory as ``train.py``.
 ### Step 2: Train models
