@@ -3,11 +3,11 @@
 ## Code for ESEC/FSE 2023 demonstration paper, A Language Model trained on Java Methods with Train/Test Deduplication 
 
 Presented by 
-[Chia-Yi Su](https://chiayisu.github.io)
-[Aakash Bansal](https://sites.nd.edu/abansal)
-[Vijayanta Jain](https://sites.google.com/maine.edu/vijayantajain/home)
-[Sepideh Ghanavati](https://www.sepidehghanavati.com)
-[Collin McMillan](https://www3.nd.edu/~cmc/)
+-[Chia-Yi Su](https://chiayisu.github.io)
+-[Aakash Bansal](https://sites.nd.edu/abansal)
+-[Vijayanta Jain](https://sites.google.com/maine.edu/vijayantajain/home)
+-[Sepideh Ghanavati](https://www.sepidehghanavati.com)
+-[Collin McMillan](https://www3.nd.edu/~cmc/)
 
 This repository contains all the code and detailed instructions to rebuild Jam models in our HuggingFace [Automatic Program Comprehension Lab](https://huggingface.co/apcl) hub. You can either go through the entire process from scratch including tokenization of raw source code data or just finetuning the models that we provide with the dataset that we provide as tokenized bins. We also provide the scripts for deduplication of any future test sets.
 
