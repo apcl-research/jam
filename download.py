@@ -4,7 +4,7 @@ import fire
 def main(download_file:bool = False,
         repo_id:str = 'apcl/java52m', # the repo that you want to download the file
         filename:str='',     # if you only want to download a single file, specify the name of that file
-        local_dir:str='test', # the local directory for the dataset file
+        local_dir:str='./', # the local directory for the dataset file
         repo_type:str='None' # set to dataset if you want to download file from dataset repo
         ):
     if(not download_file):
