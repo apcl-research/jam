@@ -1,8 +1,8 @@
 # Jam: A Language Model of Java Methods
 
-## Code for ESEC/FSE 2023 demonstration paper, A Language Model of Java Methods with Train/Test Deduplication, by Chia-Yi Su, Aakash Bansal, Vijayanta Jain, Sepideh Ghanavati, and Collin McMillan
+## Code for ESEC/FSE 2023 demonstration paper, A Language Model trained on Java Methods with Train/Test Deduplication, by Chia-Yi Su, Aakash Bansal, Vijayanta Jain, Sepideh Ghanavati, and Collin McMillan
 
-This repository contains all the code and detailed instructions to rebuild Jam models in our [Automatic Program Comprehension Lab](https://huggingface.co/apcl) hub. You can either go through the entire process from scratch including compiling dataset for training or just finetuning the models that we provide with the dataset that we have already compiled. We also provide the scripts for deduplication on test set.
+This repository contains all the code and detailed instructions to rebuild Jam models in our HuggingFace [Automatic Program Comprehension Lab](https://huggingface.co/apcl) hub. You can either go through the entire process from scratch including tokenization of raw source code data or just finetuning the models that we provide with the dataset that we provide as tokenized bins. We also provide the scripts for deduplication of any future test sets.
 
 ## Quick Link
 - [To-do list](#to-do-list)
@@ -16,7 +16,7 @@ This repository contains all the code and detailed instructions to rebuild Jam m
 - [Acknowledgement](#acknowledgement)
 
 ## To-do list
-To set up your local environment, run the following command. We recommend you to use virtual environment for running the experiements.
+To set up your local environment, run the following command. We recommend the use of a virtual environment for running the experiements.
 ```
 pip install -r requirements.txt
 ```
