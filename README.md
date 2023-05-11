@@ -125,7 +125,7 @@ python3 download.py --repo_id=apcl/jm52m  --local_dir=./data/yourdir --repo_type
 This will download the all the files in the repository. If you only want to download specific files, you can simply run the following command.
 
   ```
-  python3 download.py --repo_id=apcl/jm52m --download_file=True --filename=file.pkl --local_dir=./data/yourdir --repo_type=dataset
+  python3 download.py --repo_id=apcl/jm52m --filename=file.pkl --local_dir=./data/yourdir --repo_type=dataset
   ```
     --repo_id: either apcl/jm52m or apcl/so13m; apcl/jm52m is for 52 million Java methods and apcl/so13m is for 13 million stackoverflow posts.
     --filename: the name of the file that you want to download
@@ -161,7 +161,7 @@ After generation of ``bin`` files, you can refer to step 2 of [Train from scratc
 ### Step 1: Download bin files
  You will need both ``train.bin`` and ``val.bin`` to train your models. ``bin`` files can be downloaded in the following command.
   ```
-  python3 download.py --repo_id=apcl/jm52m --download_file=True --filename={train.bin | val.bin} --local_dir=./data/yourdir --repo_type=dataset
+  python3 download.py --repo_id=apcl/jm52m --filename={train.bin | val.bin} --local_dir=./data/yourdir --repo_type=dataset
   ```
   Note that you will need to put these two files into the same directory as ``train.py``.
 ### Step 2: Train models
