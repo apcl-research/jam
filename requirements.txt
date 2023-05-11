@@ -99,3 +99,4 @@ wrapt==1.14.1
 xxhash==3.2.0
 yarl==1.8.2
 fire
+datasketch
