@@ -137,7 +137,7 @@ To download the required datasets automatically, you can run the following comma
 python3 download.py --repo_id=apcl/jm52m  --local_dir=./data/yourdir --repo_type=dataset
 ```
 
-This will download the all the files in the repository. If you only want to download specific files, you can simply run the following command.
+This will download the all the files in the repository. If you only want to download specific files, you can simply run the following command.  **Note:** The above command will download the entire dataset including the deduplication files (total 200gb+).  If you just want the raw data, use the --filename parameter like in the next command.  Specific files you might want for the raw data are ``fundats-j1.json.gz`` and ``jm52m.sql.gz``.  Or you may wish to retrain your own Jam models using our processed and tokenized data in ``train.bin`` and ``val.bin``.
 
   ```
   python3 download.py --repo_id=apcl/jm52m --filename=file.pkl --local_dir=./data/yourdir --repo_type=dataset
@@ -147,7 +147,7 @@ This will download the all the files in the repository. If you only want to down
     --local_dir: the name of the directory that you want to put your files
     --repo_type: the type of repo that you download the file; set to dataset if you donwload files from dataset repo
 
-Note that you only need ``train.bin`` and ``val.bin`` if you only want to build your Jam models from scratch instead of going through the entire process. You can see more details on [Re-Training](#re-training). However, if you want to go through the entire process, you can check [Entire process](#entire-process) section.
+Again, you only need ``train.bin`` and ``val.bin`` if you only want to build your Jam models from scratch instead of going through the entire process. You can see more details on [Re-Training](#re-training). However, if you want to go through the entire process, you can check [Entire process](#entire-process) section.
 
 ## Entire process
 To go through the entire process, you will need an extra step to generate the ``bin`` files by your own and use these files to train your own models. 
