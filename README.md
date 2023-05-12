@@ -52,6 +52,8 @@ Please replace the --repo_id tag with the ``apcl/jam_so`` or ``apcl/jam_sojm`` d
 
 ## Fine-tuning
 
+These steps will show you how to fine-tune for the code summarization application from our paper.  You can hack these scripts to do whatever you need for your own task.
+
 ### Step 1: Download the finetuning dataset
 
 | Datset      | Description |Link        |
