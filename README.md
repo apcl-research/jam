@@ -87,7 +87,7 @@ python3 data/jam_jm52m/dedup_fctest.py --test_filename=tdats.test --lsh_dir=fc_l
     --partend: separate deduplication into several programs to speed up; maximum value 50
 To deduplicate the test data included in Stackoverflow posts, use the following command.
 ```
-python3 data/jam_so13m/dedup_stackoverflow.py --stackoverflow_text_id_filename=stackoverflow_txtfiles.pkl --fundats_file=fundats-j1.pkl --stackoverflow_text_filename=jam_so13m.pkl --dedup_outfile=dedup_testfids.txt --threshold=0.5 --test_filename=tdats.test --lsh_outdir=lsh_outdir
+python3 data/jam_so13m/dedup_stackoverflow.py --stackoverflow_text_id_filename=stackoverflow_txtfiles.pkl --fundats_file=fundats-j1.pkl --stackoverflow_text_filename=jam_so13m.pkl --dedup_outfile=dedup_testfids.txt --threshold=0.5 --test_filename=tdats.test
 ```
     --stackoverflow_text_id_filename: a pickle file that is a list for stackoverflow file name
     --fundats_file: a pickle file that is a dictionary for raw function code files with key = function id and value = raw code
