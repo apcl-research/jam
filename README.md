@@ -22,13 +22,18 @@ We thank Andrej Karpathy and Daniel Grittner for their work providing the NanoGP
 - [Inference](#inference)
 - [Dataset](#dataset)
 - [Entire process](#entire-process)
-- [Train from scratch](#train-from-scratch)
+- [Re-Training](#re-training)
 
 ## To-do list
 To set up your local environment, run the following command. We recommend the use of a virtual environment for running the experiements.
 ```
 pip install -r requirements.txt
-```
+``` 
+- If you only want to finetune one of our pre-trained models, please see [Pre-trained Model Checkpoints](#model), [Fine-tuning](#fine-tuning), and [Inference](#inference). Additionally recommend using [Deduplication toolkit](#dataset-deduplication) before inference on your own test set.
+- If you only want to deduplicate your dataset, refer to subsection 6.3, please see [Deduplication toolkit](#dataset-deduplication).
+- If you want to re-train a model using our processed and tokenized dataset, please see [Retraining](#re-training)
+- if you want to scratch-train, by reprocessing the dataset, pleasde see [Entire process](#entire-process) and [Train from scratch](#re-Training)
+
 
 ## Model
 We release the model that we pre-trained. 
@@ -132,7 +137,8 @@ This will download the all the files in the repository. If you only want to down
     --local_dir: the name of the directory that you want to put your files
     --repo_type: the type of repo that you download the file; set to dataset if you donwload files from dataset repo
 
-Note that you only need ``train.bin`` and ``val.bin`` if you only want to build your Jam models from scratch instead of going through the entire process. You can see more details on [Train from scratch](#train-from-scratch). However, if you want to go through the entire process, you can check [Entire process](#entire-process) section.
+Note that you only need ``train.bin`` and ``val.bin`` if you only want to build your Jam models from scratch instead of going through the entire process. You can see more details on [Re-Training](#re-training). However, if you want to go through the entire process, you can check [Entire process](#entire-process) section.
+
 ## Entire process
 To go through the entire process, you will need an extra step to generate the ``bin`` files by your own and use these files to train your own models. 
 
@@ -155,9 +161,9 @@ You can run the following command to generate 13 millions Stackoverflow posts da
 After the script is done, it will have both ``train.bin`` and ``val.bin`` in either ``data/jam_jm52m`` or ``data/jam_so13m`` directory. Be sure to move it to the same directory as ``train.py``.
 
 ### Step2: Train models
-After generation of ``bin`` files, you can refer to step 2 of [Train from scratch](#train-from-scratch) section for training your models.
+After generation of ``bin`` files, you can refer to step 2 of [Re-Training](#re-training) section for training your models.
 
-## Train from scratch
+## Re Training
 ### Step 1: Download bin files
  You will need both ``train.bin`` and ``val.bin`` to train your models. ``bin`` files can be downloaded in the following command.
   ```
