@@ -179,6 +179,6 @@ If you have multiple gpus, use the following command to train the model.
   ```
 You may want to refer to this [document](https://pytorch.org/docs/stable/elastic/run.html) to change the port number for rdzv-endpoint if you have multiple instances on the same machine. Otherwise, you will have two different training instances but updating the same model weights.
 
-## Hawrdware Disclaimer
+## Hardware Disclaimer
 We recommend a GPU of the [NVidia Ampere architecture](https://www.nvidia.com/en-us/data-center/ampere-architecture/) or newer, because the "bfloat16" format is essential for efficient computation with our scripts. For GPUs older than that, "float32" format can be used. However, the VRAM requirements are higher in that format and computations are slower.
 
