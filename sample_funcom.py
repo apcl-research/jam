@@ -35,6 +35,9 @@ ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=
 
 pred_file = f'predict_{out_dir}.txt'
 
+if(not os.path.exists('funcom_predictions')):
+    os.mkdir('funcom_predictions')
+
 # model
 if init_from == 'resume':
     # init from a model saved in a specific directory
