@@ -29,7 +29,7 @@ To set up your local environment, run the following command. We recommend the us
 ```
 pip install -r requirements.txt
 ``` 
-- If you only want to finetune one of our pre-trained models, please see [Pre-trained Model Checkpoints](#model), [Fine-tuning](#fine-tuning), and [Inference](#inference). Additionally recommend using [Deduplication toolkit](#dataset-deduplication) before inference on your own test set.
+- **If you only want to finetune one of our pre-trained models**, please see [Pre-trained Model Checkpoints](#model), [Fine-tuning](#fine-tuning), and [Inference](#inference). Additionally recommend using [Deduplication toolkit](#dataset-deduplication) before inference on your own test set.
 - If you only want to deduplicate your dataset, refer to subsection 6.3, please see [Deduplication toolkit](#dataset-deduplication).
 - If you want to re-train a model using our processed and tokenized dataset, please see [Retraining](#re-training)
 - if you want to scratch-train, by reprocessing the dataset, pleasde see [Entire process](#entire-process) and [Re-Training](#re-Training)
