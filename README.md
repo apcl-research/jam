@@ -11,6 +11,8 @@ Presented by:
 
 This repository contains all the code and detailed instructions to rebuild Jam models in our HuggingFace [Automatic Program Comprehension Lab](https://huggingface.co/apcl) hub. You can either go through the entire process from scratch including tokenization of raw source code data or just finetuning the models that we provide with the dataset that we provide as tokenized bins. We also provide the scripts for deduplication of any future test sets.
 
+Need help?  Contact us via our [Discord Server](https://discord.gg/Sj8TwGJv4w)
+
 ## Acknowledgement
 We thank Andrej Karpathy and Daniel Grittner for their work providing the NanoGPT and NanoGPT-LoRA code. This repository forks from Daniel Grittner's [NanoGPT-LoRA](https://github.com/danielgrittner/nanoGPT-LoRA) repository, which is a forked from the original [NanoGPT](https://github.com/karpathy/nanoGPT) by Andrej Karpathy. 
 
@@ -140,6 +142,8 @@ python3 download.py --repo_id=apcl/jm52m  --local_dir=./data/yourdir --repo_type
 ```
 
 This will download the all the files in the repository. If you only want to download specific files, you can simply run the following command.  **Note:** The above command will download the entire dataset including the deduplication files (total 200gb+).  If you just want the raw data, use the --filename parameter like in the next command.  Specific files you might want for the raw data are ``fundats-j1.json.gz`` and ``jm52m.sql.gz``.  Or you may wish to retrain your own Jam models using our processed and tokenized data in ``train.bin`` and ``val.bin``.
+
+Our raw data includes full traceability from the methods to the files and projects where those methods originate.  The code for each method is in ``fundats-j1'' as a Python dictionary.  You may download either the json or the pickle version.  The key for each method is an ID number.  That ID number is the ``id`` field of the ``functionalunits`` table in the SQL dump.  Other fields should be self-explanatory.
 
   ```
   python3 download.py --repo_id=apcl/jm52m --filename=file.pkl --local_dir=./data/yourdir --repo_type=dataset
