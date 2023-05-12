@@ -56,8 +56,18 @@ Please replace the --repo_id tag with the ``apcl/jam_so`` or ``apcl/jam_sojm`` d
 
 | Datset      | Description |Link        |
 | ----------- | ----------- |------------|
-| funcom-java-long  | is a dataset by [Bansal et al.]() we use to fine tune and test our model for source code summarization. This dataset is also annotate as "q90" in our scripts | [link](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main)
+| funcom-java-long  | is a dataset for source code summarization by Bansal et al. made available pre-publication we use to fine tune and test our model for source code summarization. This dataset is also annotate as "q90" in our scripts | [link](https://huggingface.co/datasets/apcl/funcom-java-long/tree/main)
 
+
+Please cite the use of the funcom-java-long dataset as follows:
+```
+@article{bansal2023human,
+	title={Towards modeling human attention from eye movements for neutral source code summarization},
+	author={Bansal, Aakash and Sharif, Bonita and McMillan, Collin},
+	journal={Proceedings of ACM Human-Computer Interaction, Vol. 7},
+	year={2023}
+
+```
 
 ### Step 2: Fine-tune model
 ```
