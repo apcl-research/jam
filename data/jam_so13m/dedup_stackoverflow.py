@@ -58,7 +58,8 @@ def main(test_filename:str= '/nfs/projects/funcom/data/javastmt_fc/output/tdats.
          partend:int=100
 
         ):
-
+    if(os.path.exists(lsh_dir)):
+        os.mkdir(lsh_dir)
     stackoverflow_file = open(stackoverflow_text_id_filename,'rb')
     files_a = pickle.load(stackoverflow_file)
 

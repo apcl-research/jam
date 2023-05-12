@@ -61,6 +61,8 @@ def main(test_filename:str='/nfs/projects/funcom/data/javastmt_fc/output/tdats.t
         partend:int=50     # maximum for partend = 50
         ):
     
+    if(not os.path.exists(lsh_dir)):
+        os.mkdir(lsh_dir)
 
     fundats = pickle.load(open(fundats_file, 'rb'))
     allfids = list(fundats.keys())
