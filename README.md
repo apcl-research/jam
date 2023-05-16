@@ -201,6 +201,23 @@ If you have multiple gpus, use the following command to train the model.
   ```
 You may want to refer to this [document](https://pytorch.org/docs/stable/elastic/run.html) to change the port number for rdzv-endpoint if you have multiple instances on the same machine. Otherwise, you will have two different training instances but updating the same model weights.
 
+## Citations
+
+If you use this work in an academic paper, please cite the following:
+
+```
+@misc{su2023language,
+      title={A Language Model of Java Methods with Train/Test Deduplication}, 
+      author={Chia-Yi Su and Aakash Bansal and Vijayanta Jain and Sepideh Ghanavati and Collin Mcmillan},
+      year={2023},
+      eprint={2305.08286},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE}
+}
+```
+
+PDF available here: https://arxiv.org/abs/2305.08286
+
 ## Hardware Disclaimer
-We recommend a GPU of the [NVidia Ampere architecture](https://www.nvidia.com/en-us/data-center/ampere-architecture/) or newer, because the "bfloat16" format is essential for efficient computation with our scripts. For GPUs older than that, "float32" format can be used. However, the VRAM requirements are higher in that format and computations are slower.
+We recommend a GPU of the [NVidia Ampere architecture](https://www.nvidia.com/en-us/data-center/ampere-architecture/) or newer, because the "bfloat16" format is essential for efficient computation with our scripts. For GPUs older than that, "float32" format can be used. However, the VRAM requirements are higher in that format and computations are slower.  We used Nvidia A5000 GPUs, though an A4000 should be sufficient.
 
