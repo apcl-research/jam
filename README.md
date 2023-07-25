@@ -206,13 +206,14 @@ You may want to refer to this [document](https://pytorch.org/docs/stable/elastic
 If you use this work in an academic paper, please cite the following:
 
 ```
-@misc{su2023language,
+@inproceedings{su2023language,
       title={A Language Model of Java Methods with Train/Test Deduplication}, 
       author={Chia-Yi Su and Aakash Bansal and Vijayanta Jain and Sepideh Ghanavati and Collin Mcmillan},
+      month={December},
       year={2023},
-      eprint={2305.08286},
-      archivePrefix={arXiv},
-      primaryClass={cs.SE}
+      booktitle={Proceedings of the 31st ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering},
+      location = {San Francisco, CA, USA},
+      series = {ESEC/FSE 2023}
 }
 ```
 
